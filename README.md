@@ -8,6 +8,7 @@ This application enables users to both buy and sell products, while giving admin
 ## User Roles & Features
 
 ### Super Admin
+- Account: admin1 / 12341234
 - Monitor and manage all registered users  
 - View all products listed by users  
 - Impose and manage payment requirements  
