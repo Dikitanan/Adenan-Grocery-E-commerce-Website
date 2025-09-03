@@ -1,0 +1,176 @@
+{% include 'navbar.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Add Product - Dashboard HTML Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <link rel="stylesheet" href="static/css2/fontawesome.min.css">
+    <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
+    <link rel="stylesheet" href="static/css2/bootstrap.min.css">
+    <link rel="stylesheet" href="static/css2/templatemo-style.css">
+</head>
+
+<body style="background-color: #ecebeb;">
+    <div class="container tm-mt-big tm-mb-big" style="padding-top: 150px; background-color: #ecebeb;">
+        <div class="row">
+            <div class="col-xl-9 col-lg-10 col-md-12 col-sm-12 mx-auto">
+                <div class="tm-bg-primary-dark tm-block tm-block-h-auto" style="background-color: #6D9531 ;">
+                    <div class="row">
+                        <div class="col-12" style="background-color: #6D9531; margin-bottom: 10px;">
+                            <h2 class="tm-block-title d-inline-block">Add Product</h2>
+                        </div>
+                    </div>
+                    <div class="row tm-edit-product-row">
+                        <div class="col-xl-6 col-lg-6 col-md-12">
+                            <form method="POST" action="" class="tm-edit-product-form" enctype="multipart/form-data">
+                                {{ form.hidden_tag() }}
+                                <div class="form-group mb-3">
+                                    {{ form.name.label(for="name", class="form-label") }}
+                                    {{ form.name(id="name", class="form-control validate") }}
+                                </div>
+                                <div class="form-group mb-3">
+                                    {{ form.description.label(for="description", class="form-label") }}
+                                    {{ form.description(id="description", class="form-control validate") }}
+                                </div>
+                                <div class="form-group mb-3">
+                                    {{ form.category.label(for="category", class="form-label") }}
+                                    {{ form.category(id="category", class="custom-select tm-select-accounts") }}
+                                </div>
+                                <div class="row">
+                                    <div class="form-group mb-3 col-xs-12 col-sm-6">
+                                        {{ form.price.label(for="price", class="form-label") }}
+                                        {{ form.price(id="price", class="form-control validate") }}
+                                    </div>
+                                    <div class="form-group mb-3 col-xs-12 col-sm-6">
+                                        {{ form.stock.label(for="stock", class="form-label") }}
+                                        {{ form.stock(id="stock", class="form-control validate") }}
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                  <button type="submit" class="btn btn-primary btn-block text-uppercase">Add Product Now</button>
+                                </div>
+                            </div>
+                            <div class="col-xl-6 col-lg-6 col-md-12 mx-auto mb-4">
+                              <div class="form-group mb-3">
+                                <label for="product_image">Product Image</label>
+                                <div class="custom-file"> 
+                                  {{ form.product_image.label(class="form-label") }}
+                                  {{ form.product_image(class="custom-file-input", id="fileInput") }}
+                                  <label class="custom-file-label" for="fileInput">Choose file</label>
+                                </div>
+                                {% include '_messages.html' %}
+                              </div>
+                              <div class="tm-product-img-dummy mx-auto">
+                                <img id="previewImage" src="#" alt="Preview" style="width: 100%; height: 100%; display: none;" />
+                            </div>              
+                              <div class="custom-file mt-3 mb-3">
+                                <input id="fileInput" name="product_image" type="file" style="display: none;" />
+                              </div>
+                            </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <footer class="footer spad">
+        <div class="container">
+          <div class="row">
+              <div class="col-lg-3 col-md-6 col-sm-6">
+                  <div class="footer__about">
+                      <div class="footer__about__logo">
+                          <a href="./index.html"><img src="static/img/logo.png" alt=""></a>
+                      </div>
+                      <ul>
+                          <li>Address: 60-49 Road 11378 New York</li>
+                          <li>Phone: +65 11.188.888</li>
+                          <li>Email: hello@colorlib.com</li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                  <div class="footer__widget">
+                      <h6>Useful Links</h6>
+                      <ul>
+                          <li><a href="#">About Us</a></li>
+                          <li><a href="#">About Our Shop</a></li>
+                          <li><a href="#">Secure Shopping</a></li>
+                          <li><a href="#">Delivery infomation</a></li>
+                          <li><a href="#">Privacy Policy</a></li>
+                          <li><a href="#">Our Sitemap</a></li>
+                      </ul>
+                      <ul>
+                          <li><a href="#">Who We Are</a></li>
+                          <li><a href="#">Our Services</a></li>
+                          <li><a href="#">Projects</a></li>
+                          <li><a href="#">Contact</a></li>
+                          <li><a href="#">Innovation</a></li>
+                          <li><a href="#">Testimonials</a></li>
+                      </ul>
+                  </div>
+              </div>
+              <div class="col-lg-4 col-md-12">
+                  <div class="footer__widget">
+                      <h6>Join Our Newsletter Now</h6>
+                      <p>Get E-mail updates about our latest shop and special offers.</p>
+                      <form action="#">
+                          <input type="text" placeholder="Enter your mail">
+                          <button type="submit" class="site-btn">Subscribe</button>
+                      </form>
+                      <div class="footer__widget__social">
+                          <a href="#"><i class="fa fa-facebook"></i></a>
+                          <a href="#"><i class="fa fa-instagram"></i></a>
+                          <a href="#"><i class="fa fa-twitter"></i></a>
+                          <a href="#"><i class="fa fa-pinterest"></i></a>
+                      </div>
+                  </div>
+              </div>
+          </div>
+          <div class="row">
+              <div class="col-lg-12">
+                  <div class="footer__copyright">
+                      <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
+                      <div class="footer__copyright__payment"><img src="static/img/payment-item.png" alt=""></div>
+                  </div>
+              </div>
+          </div>
+      </div>
+   </footer>
+
+    <script src="static/js2/jquery-3.3.1.min.js"></script>
+    <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+    <script src="static/js2/bootstrap.min.js"></script>
+
+    <script>
+      $(function() {
+        $("#expire_date").datepicker();
+      });
+
+      // Display the selected image in the preview
+      document.getElementById('fileInput').addEventListener('change', function() {
+        var previewImage = document.getElementById('previewImage');
+        var uploadedImage = document.getElementById('uploadedImage');
+        var fileInput = this;
+        if (fileInput.files && fileInput.files[0]) {
+          var reader = new FileReader();
+          reader.onload = function(e) {
+            previewImage.src = e.target.result;
+            previewImage.style.display = 'block';
+            uploadedImage.src = e.target.result;
+            uploadedImage.style.display = 'block';
+          };
+          reader.readAsDataURL(fileInput.files[0]);
+        }
+      });
+    </script>
+</body>
+
+</html>

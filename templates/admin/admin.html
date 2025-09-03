@@ -1,0 +1,247 @@
+{% include '_messages.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <title>Admin Page</title>
+
+  <!-- Bootstrap CSS -->
+  <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" rel="stylesheet">
+
+  <!-- Optional: Add your custom styles here -->
+
+  <!-- Bootstrap JS and dependencies -->
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=YourCustomFont&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="#">ADMIN</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+      <ul class="navbar-nav mr-auto">
+        <li class="nav-item active">
+          <a class="nav-link" href="#"> <span class="sr-only">(current)</span></a>
+        </li>
+      </ul>
+      <form class="form-inline my-2 my-lg-0">
+        <div class="input-group" style="padding-right: 20px;">
+            <div class="input-group-prepend">
+                <span class="input-group-text" id="basic-addon1">Search</span>
+            </div>
+            <input type="text" class="form-control" id="searchInput" placeholder="Search Username">
+        </div>
+        <ul class="navbar-nav mr-auto">
+        <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown"
+              aria-haspopup="true" aria-expanded="false">
+              Settings
+            </a>
+            <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+              <a class="dropdown-item" href="{{url_for('logout')}}">Logout</a>
+            </div>
+          </li>
+        </ul>
+    </form>
+    
+    </div>
+  </nav>
+  
+  <div class="container mt-3" style="padding-top: 50px;">
+        <h6 class="text-white bg-dark p-3 rounded-lg" style="font-family: 'YourCustomFont', sans-serif;">Welcome, {{ session['name'] }}!</h6>
+        <div class="info-container mt-3 p-3 border rounded-lg" style="font-family: 'YourCustomFont', sans-serif; background-color: #f8f9fa;">
+        <div class="info-label"><strong>BALANCE:</strong> PHP {{ '{:,.2f}'.format(total_balance) }}</div>
+        <div class="info-label"><strong>ACCOUNT PAYABLE:</strong> PHP {{ '{:,.2f}'.format(pending_payout | default(0.00)) }}</div>
+        <div class="info-label"><strong>ACCOUNT RECEIVABLE:</strong> PHP {{ '{:,.2f}'.format(admin_erp.balance) }}</div>
+        <div class="info-label"><strong>EARNINGS:</strong> PHP {{ '{:,.2f}'.format(admin_erp.receivable) }}</div>
+    </div>
+</div>
+
+
+
+
+
+  <!-- User Table -->
+  <div class="container mt-5">
+    <h2>Users Table</h2>
+    <div class="mb-3">
+    </div>
+    <div style="overflow-x: auto;">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Registration Date</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for user in users %}
+                    {% if user.role != 1 %}
+                        <tr>
+                            <td>{{ user.id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>
+                                {% if user.role == 0 %}
+                                    {{ user.role }}
+                                {% elif user.role == 3 %}
+                                    <span style="color: red;">Banned</span>
+                                {% endif %}
+                            </td>
+                            <td>{{ user.registration_date.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+                            <td>
+                                {% if user.role == 0 %}
+                                    <form action="{{ url_for('ban_user', user_id=user.id) }}" method="post">
+                                        <button type="submit" class="btn btn-danger">Ban</button>
+                                    </form>
+                                {% elif user.role == 3 %}
+                                    <form action="{{ url_for('unban_user', user_id=user.id) }}" method="post">
+                                        <button type="submit" class="btn btn-success">Unban</button>
+                                    </form>
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        document.getElementById('searchInput').addEventListener('input', function() {
+            var searchValue = this.value.toLowerCase();
+            var rows = document.querySelectorAll('tbody tr');
+
+            rows.forEach(function(row) {
+                var name = row.children[1].textContent.toLowerCase();
+
+                if (name.includes(searchValue)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            });
+        });
+    </script>
+</div>
+
+<div class="container mt-5">
+    <h2>Product Table</h2>
+    <div style="overflow-x: auto;">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Sellername</th>
+                    <th>Name</th>
+                    <th>Description</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Image</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for product in products %}
+                    <tr>
+                        <td>{{ product.id }}</td>
+                        <td>{{ product.username }}</td>
+                        <td>{{ product.name }}</td>
+                        <td>{{ product.description }}</td>
+                        <td>{{ product.category }}</td>
+                        <td>{{ product.price }}</td>
+                        <td>{{ product.stock }}</td>
+                        <td><img src="{{ url_for('static', filename='images/' + product.image_filename) }}"
+                                alt="{{ product.name }}" style="max-width: 80px; max-height: 80px;"></td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+<div class="container mt-5">
+    <h2>Payout Requests Table</h2>
+    <div style="overflow-x: auto;">
+        <table class="table table-bordered table-striped">
+            <thead class="thead-dark">
+                <tr>
+                    <th>ID</th>
+                    <th>Username</th>
+                    <th>Amount</th>
+                    <th>G-Cash Number</th>
+                    <th>Status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for payout_request in payout_requests %}
+                    <tr>
+                        <td>{{ payout_request.id }}</td>
+                        <td>{{ payout_request.username }}</td>
+                        <td>PHP {{ '{:,.2f}'.format(payout_request.ammount) }}</td>
+                        <td>{{ payout_request.gcash }}</td>
+                        <td>{{ payout_request.status }}</td>
+                        <td>
+                            {% if payout_request.status == 'Paid' %}
+                                <span class="text-success">Successfully Paid</span>
+                            {% else %}
+                                <a href="#" class="btn btn-success" data-toggle="modal" data-target="#uploadModal{{ payout_request.id }}">Process</a>
+                            {% endif %}
+                        </td>
+                    </tr>
+
+                    <!-- Modal for uploading proof of payment -->
+                    <div class="modal fade" id="uploadModal{{ payout_request.id }}" tabindex="-1" role="dialog" aria-labelledby="uploadModalLabel" aria-hidden="true">
+                        <div class="modal-dialog" role="document">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="uploadModalLabel">Upload Proof Of Payment</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <!-- Add your form for uploading proof of payment here -->
+                                    <form method="post" action="{{ url_for('upload_proof', payout_id=payout_request.id) }}" enctype="multipart/form-data">
+                                        <label for="proof">Proof Of Payment:</label>
+                                        <input type="file" class="form-control" id="proof" name="proof" required>
+                                        <button type="submit" class="btn btn-primary mt-3">Upload</button>
+                                    </form>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+
+
+
+
+
+  <!-- Optional: Add your content here -->
+
+</body>
+
+</html>

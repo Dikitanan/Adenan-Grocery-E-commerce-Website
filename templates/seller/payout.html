@@ -1,0 +1,92 @@
+{% include '_messages.html' %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cashout Request Form</title>
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+        }
+        form {
+            background-color: #fff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            max-width: 400px;
+            width: 100%;
+            position: relative;
+        }
+        h2 {
+            text-align: center;
+            color: #333;
+        }
+        .close-btn {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            font-size: 20px;
+            cursor: pointer;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+
+    <form method="post" action="{{ url_for('payout') }}">
+        <span></span><a href="{{url_for('sellerpage')}}" class="close-btn">&times;</a></span>
+        <h2 class="mb-4">Cashout Request Form</h2>
+
+        <div class="form-group">
+            <label for="username">Username:</label>
+            <div class="form-control-static">{{erp_user.username}}</div>
+        </div>
+        <div class="form-group">
+            <label for="balance">Available Balance:</label>
+            <div class="form-control-static" style="color: {% if erp_user.payable <= 700 %}red{% endif %}">
+                {% if erp_user.payable <= 700 %}
+                    No Available Balance
+                {% else %}
+                    PHP {{ '{:,.2f}'.format(erp_user.payable) }}
+                {% endif %}
+            </div>
+        </div>        
+        <div class="form-group">
+            <label for="amount">Amount to Payout:</label>
+            <input type="text" class="form-control" id="amount" name="amount" placeholder="Enter amount" required>
+        </div>
+
+        <div class="form-group">
+            <label for="gcash">G-Cash Number:</label>
+            <input type="text" class="form-control" id="gcash" name="gcash" placeholder="Enter G-Cash number" required>
+        </div>
+
+        <button type="submit" class="btn btn-success btn-block">Submit</button>
+    </form>
+
+    <!-- Bootstrap JS (optional) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.10.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+    <script>
+        function closeForm() {
+            // You can add additional logic here if needed
+            document.querySelector('form').style.display = 'none';
+        }
+    </script>
+</body>
+</html>

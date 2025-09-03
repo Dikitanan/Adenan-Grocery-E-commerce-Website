@@ -1,0 +1,478 @@
+<!DOCTYPE html>
+<html lang="zxx">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="description" content="Ogani Template">
+    <meta name="keywords" content="Ogani, unica, creative, html">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Adenan Groceries</title>
+
+    <!-- Google Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;600;900&display=swap" rel="stylesheet">
+
+    <!-- Css Styles -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/font-awesome.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/elegant-icons.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/nice-select.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/jquery-ui.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/owl.carousel.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/slicknav.min.css') }}" type="text/css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" type="text/css">
+    
+</head>
+
+<body>
+    <!-- Page Preloder -->
+    <div id="preloder">
+        <div class="loader"></div>
+    </div>
+    {% include '_messages.html' %}
+    <!-- Humberger Begin -->
+    <div class="humberger__menu__overlay"></div>
+    <div class="humberger__menu__wrapper">
+        <div class="humberger__menu__logo">
+            <a href="{{ url_for('dashboard') }}"><img src="{{ url_for('static', filename='img/logo.png') }}" alt=""></a>
+        </div>
+        <div class="humberger__menu__cart">
+            <ul>
+            </ul>
+            <div class="header__cart__price"><span></span></div>
+        </div>
+        <div class="humberger__menu__widget">
+            <div class="header__top__right__language">
+                {% if 'name' in session %}
+                <img src="{{ url_for('static', filename='img/setting2.jpg') }}" alt="" style="height: 20px; width: 20px;">
+                    <span class="arrow_carrot-down"></span>
+                    <ul>
+                        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                        <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                        
+                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                    </ul>
+                {% else %}
+                <img src="{{ url_for('static', filename='img/setting2.jpg') }}" alt="" style="height: 20px; width: 20px;">
+                    <span class="arrow_carrot-down"></span>
+                    <ul>
+                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                    </ul>
+                {% endif %}
+            </div>
+            <div class="header__top__right__auth">
+                {% if session.get('name') %}
+                    <span><i class="fa fa-user"></i>  {{ session['name'] }}</span>
+                {% else %}
+                    <a href="{{ url_for('login') }}"><i class="fa fa-user"></i> Login</a>
+                {% endif %}
+            </div>
+        </div>
+        <nav class="humberger__menu__nav mobile-menu">
+            <ul>
+                <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+                <li><a href="{{ url_for('shopgrid') }}">Shop</a></li>
+                <li><a href="./blog.html">About Us</a></li>
+                <li class="active"><a href="{{url_for('vieworders')}}">My Orders</a></li>
+                <li><a href="#">More</a>
+                    <ul class="header__menu__dropdown">
+                        <li><a href="{{ url_for('sellerpage') }}">View Seller Page</a></li>
+                        <li><a href="{{ url_for('shopcart') }}">Shoping Cart</a></li>
+                        <li><a href="{{ url_for('addproducts') }}">Add Product</a></li>
+                        <li><a href="{{ url_for('sellerproducts') }}">View Products</a></li>
+                    </ul>
+                </li>
+            </ul>
+        </nav>
+        <div id="mobile-menu-wrap"></div>
+        <div class="header__top__right__social">
+            <a href="#"><i class="fa fa-facebook"></i></a>
+            <a href="#"><i class="fa fa-twitter"></i></a>
+            <a href="#"><i class="fa fa-linkedin"></i></a>
+            <a href="#"><i class="fa fa-pinterest-p"></i></a>
+        </div>
+        <div class="humberger__menu__contact">
+            <ul>
+                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                <li>Free Shipping for all Order of $99</li>
+            </ul>
+        </div>
+    </div>
+    <!-- Humberger End -->
+
+    <!-- Header Section Begin -->
+    <header class="header" style="position: fixed; z-index: 999; background-color: white; width: 100%;">
+        <div class="header__top">
+            <div class="container">
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="header__top__left">
+                            <ul>
+                                <li><i class="fa fa-envelope"></i> hello@colorlib.com</li>
+                                <li>Free Shipping for all Order of $99</li>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="header__top__right">
+                            <div class="header__top__right__social">
+                                <a href="#"><i class="fa fa-facebook"></i></a>
+                                <a href="#"><i class="fa fa-twitter"></i></a>
+                                <a href="#"><i class="fa fa-linkedin"></i></a>
+                                <a href="#"><i class="fa fa-pinterest-p"></i></a>
+                            </div>
+                            <div class="header__top__right__language">
+                                {% if 'name' in session %}
+                                <img src="{{ url_for('static', filename='img/setting2.jpg') }}" alt="" style="height: 20px; width: 20px;">
+                                    <span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li><a href="{{ url_for('profile') }}">Profile</a></li>
+                                        <li><a href="{{ url_for('settings') }}">Settings</a></li>
+                                        
+                                        <li><a href="{{ url_for('logout') }}">Logout</a></li>
+                                    </ul>
+                                {% else %}
+                                <img src="{{ url_for('static', filename='img/setting2.jpg') }}" alt="" style="height: 20px; width: 20px;">
+                                    <span class="arrow_carrot-down"></span>
+                                    <ul>
+                                        <li><a href="{{ url_for('login') }}">Login</a></li>
+                                        <li><a href="{{ url_for('register') }}">Register</a></li>
+                                    </ul>
+                                {% endif %}
+                            </div>
+                            <div class="header__top__right__auth">
+                                {% if session.get('name') %}
+                                    <span><i class="fa fa-user"></i>  {{ session['name'] }}</span>
+                                {% else %}
+                                    <a href="{{ url_for('login') }}"><i class="fa fa-user"></i> Login</a>
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-1">
+                    <div class="header__logo">
+                        <a href="{{url_for('dashboard')}}"><img src="static/images/logo.jpg" alt="" style="width: 70px; height: 60px;"></a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <nav class="header__menu">
+                        <ul>
+                            <li><a href="{{ url_for('dashboard') }}">Home</a></li>
+                            <li><a href="{{ url_for('shopgrid') }}">Shop</a></li>
+                            <li><a href="./blog.html">About Us</a></li>
+                            <li class="active"><a href="{{url_for('vieworders')}}">My Orders</a></li>
+                            <li><a href="#">More</a>
+                                <ul class="header__menu__dropdown">
+                                    <li><a href="{{ url_for('sellerpage') }}">View Seller Page</a></li>
+                                    <li><a href="{{ url_for('shopcart') }}">Shoping Cart</a></li>
+                                    <li><a href="{{ url_for('addproducts') }}">Add Product</a></li>
+                                    <li><a href="{{ url_for('sellerproducts') }}">View Products</a></li>
+                                </ul>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+                <div class="col-lg-5">
+                    <div class="header__cart">
+                        <ul>
+                            <li><a href="#"><i class="fa fa-heart"></i> <span>1</span></a></li>
+                            <li><a href="{{ url_for('shopcart') }}"><i class="fa fa-shopping-bag"></i> <span>{{ total_items }}</span></a></li>
+                        </ul>
+                        <div class="header__cart__price">item: <span>$150.00</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="humberger__open">
+                <i class="fa fa-bars"></i>
+            </div>
+        </div>
+    </header>
+    <!-- NAV Section End -->
+    
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(to right, #f0f0f0, #e0e0e0);
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            margin-bottom: 30px;
+        }
+        .order-container {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .order-item {
+            background: linear-gradient(to right, #ffffff, #f5f5f5);
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            overflow: hidden;
+            margin-bottom: 20px;
+            transition: transform 0.2s ease-in-out, box-shadow 0.3s ease-in-out;
+        }
+        .order-item:hover {
+            transform: scale(1.02);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2);
+        }
+        .product-image {
+            float: left;
+            margin-right: 20px;
+            overflow: hidden;
+            border-radius: 10px 0 0 10px;
+            width: 150px;
+            height: 160px;
+        }
+        .product-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            border-radius: 10px 0 0 10px;
+            transition: transform 0.3s ease-in-out;
+        }
+        .order-item:hover .product-image img {
+            transform: scale(1.1);
+        }
+        .product-details {
+            float: left;
+            padding: 20px;
+        }
+        h2 {
+            color: #333;
+            margin-bottom: 8px;
+        }
+        p {
+            color: #666;
+            margin: 0;
+        }
+        /* Make the entire order-item clickable */
+        .order-link {
+            display: block;
+            text-decoration: none;
+            color: inherit;
+        }
+
+        .denied {
+        border: 2px solid red;
+        }
+
+        .accepted {
+        border: 2px solid green;
+        }
+
+        .pagination {
+        margin-top: 20px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        }
+
+        .pagination-link,
+        .pagination-arrow {
+            display: inline-block;
+            padding: 8px 12px;
+            margin: 0 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            text-decoration: none;
+            color: #333;
+        }
+
+        .pagination-link:hover,
+        .pagination-arrow:hover {
+            background-color: #f0f0f0;
+        }
+
+        .pagination-link.current {
+            background-color: #A1CF25; /* Change this to the color you want for the current page */
+            color: #fff; /* Change this to the text color you want for the current page */
+        }
+
+        .dots {
+            margin: 0 5px;
+        }
+
+        .order-card {
+        position: relative;
+        margin-bottom: 20px;
+        }
+
+        .close-button {
+            position: absolute;
+            top: 5px;
+            right: 5px;
+            padding: 5px;
+            background-color: #F6F6F6;
+            border: none;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+
+
+    <div class="order-container" style="padding-top: 150px; height: 850px;">
+        <h2>Your Orders</h2>
+        <!-- Sample Orders -->
+        {% for order_product, order in user_orders_pagination.items %}
+            <div class="order-card">
+                <a href="{{ url_for('tracking', order_id=order_product.order_id)}}" class="order-link">
+                    <div class="order-item {% if order.status == 'denied' %}denied{% elif order.status == 'accepted' or order.status == 'deliver' or order.status == 'delivered' or order.status == 'received' %}accepted{% endif %}">
+                        <div class="product-image">
+                            <img src="{{ url_for('static', filename='images/' + order_product.image_filename) }}" alt="Product Image"> 
+                        </div>
+                        <div class="product-details">
+                            <h2>{{ order_product.product }}</h2>
+                            <p style="font-size: small;">Seller: {{ order_product.sellername }}</p>
+                            <p>Price: PHP {{ order_product.price }}0</p>
+                            <p>Quantity: {{ order_product.quantity }}</p>
+                        </div>
+                    </div>
+                </a>
+                <a type="button" class="close-button" style="color: black;" onclick="confirmDelete('{{ url_for('del_orderproduct', orderproduct_id=order_product.id) }}')">X</a>
+            </div>
+        {% endfor %}
+        <!-- Pagination Links -->
+        <div class="pagination">
+            {% if user_orders_pagination.has_prev %}
+                <a href="{{ url_for('vieworders', page=user_orders_pagination.prev_num) }}" class="pagination-arrow">«</a>
+            {% endif %}
+            {% for page_num in user_orders_pagination.iter_pages() %}
+                {% if page_num %}
+                    {% if page_num == user_orders_pagination.page %}
+                        <a href="{{ url_for('vieworders', page=page_num) }}" class="pagination-link current">{{ page_num }}</a>
+                    {% else %}
+                        <a href="{{ url_for('vieworders', page=page_num) }}" class="pagination-link">{{ page_num }}</a>
+                    {% endif %}
+                {% else %}
+                    <span class="dots">...</span>
+                {% endif %}
+            {% endfor %}
+            {% if user_orders_pagination.has_next %}
+                <a href="{{ url_for('vieworders', page=user_orders_pagination.next_num) }}" class="pagination-arrow">»</a>
+            {% endif %}
+        </div>        
+    </div>
+    
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+        <script>
+            function confirmDelete(url) {
+                // Customize the confirmation message
+                var confirmationMessage = "Are you sure you want to delete this order?";
+                
+                // Show a custom modal using SweetAlert
+                Swal.fire({
+                    title: 'The system says:',
+                    text: confirmationMessage,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#3085d6',
+                    cancelButtonColor: '#d33',
+                    confirmButtonText: 'Yes, delete it!'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        // If the user clicks OK, proceed with the deletion
+                        window.location.href = url;
+                    }
+                });
+            }
+
+    
+        function closeOrderCard(button) {
+            var orderCard = button.closest('.order-card');
+            orderCard.style.display = 'none';
+        }
+    </script>
+    
+
+    <!-- Footer Section Begin -->
+    <footer class="footer spad">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-3 col-md-6 col-sm-6">
+                    <div class="footer__about">
+                        <div class="footer__about__logo">
+                            <a href="./index.html"><img src="static/img/logo.png" alt=""></a>
+                        </div>
+                        <ul>
+                            <li>Address: 60-49 Road 11378 New York</li>
+                            <li>Phone: +65 11.188.888</li>
+                            <li>Email: hello@colorlib.com</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-6 col-sm-6 offset-lg-1">
+                    <div class="footer__widget">
+                        <h6>Useful Links</h6>
+                        <ul>
+                            <li><a href="#">About Us</a></li>
+                            <li><a href="#">About Our Shop</a></li>
+                            <li><a href="#">Secure Shopping</a></li>
+                            <li><a href="#">Delivery infomation</a></li>
+                            <li><a href="#">Privacy Policy</a></li>
+                            <li><a href="#">Our Sitemap</a></li>
+                        </ul>
+                        <ul>
+                            <li><a href="#">Who We Are</a></li>
+                            <li><a href="#">Our Services</a></li>
+                            <li><a href="#">Projects</a></li>
+                            <li><a href="#">Contact</a></li>
+                            <li><a href="#">Innovation</a></li>
+                            <li><a href="#">Testimonials</a></li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="col-lg-4 col-md-12">
+                    <div class="footer__widget">
+                        <h6>Join Our Newsletter Now</h6>
+                        <p>Get E-mail updates about our latest shop and special offers.</p>
+                        <form action="#">
+                            <input type="text" placeholder="Enter your mail">
+                            <button type="submit" class="site-btn">Subscribe</button>
+                        </form>
+                        <div class="footer__widget__social">
+                            <a href="#"><i class="fa fa-facebook"></i></a>
+                            <a href="#"><i class="fa fa-instagram"></i></a>
+                            <a href="#"><i class="fa fa-twitter"></i></a>
+                            <a href="#"><i class="fa fa-pinterest"></i></a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="footer__copyright">
+                        <div class="footer__copyright__text"><p><!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
+  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="fa fa-heart" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+  <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. --></p></div>
+                        <div class="footer__copyright__payment"><img src="{{ url_for('static', filename='img/payment-item.png') }}" alt=""></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Footer Section End -->
+
+    <!-- Js Plugins -->
+    <script src="{{ url_for('static', filename='js/jquery-3.3.1.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.nice-select.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery-ui.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/jquery.slicknav.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/mixitup.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/owl.carousel.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/main.js') }}"></script>
+
+
+
+</body>
+
+</html>

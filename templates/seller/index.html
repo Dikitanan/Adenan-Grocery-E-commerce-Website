@@ -1,0 +1,279 @@
+{% include 'navbar.html' %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Product Admin - Dashboard HTML Template</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:400,700">
+    <!-- https://fonts.google.com/specimen/Roboto -->
+    <link rel="stylesheet" href="static/css2/fontawesome.min.css">
+    <!-- https://fontawesome.com/ -->
+    <link rel="stylesheet" href="static/css2/bootstrap.min.css">
+    <!-- https://getbootstrap.com/ -->
+    <link rel="stylesheet" href="static/css2/templatemo-style.css">
+    <!--
+	Product Admin CSS Template
+	https://templatemo.com/tm-524-product-admin
+	-->
+
+
+
+    
+</head> 
+    <body>
+        {% include '_messages.html' %}
+            <!-- row -->
+            <div class="row tm-content-row" style="margin-left: 40px; margin-right: 40px; padding-top: 150px;">
+            
+               
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller" style="background-color: #739072;">
+                        <div class="row">
+                            <div class="col">
+                              <h1 class="tm-block-title">Sales Report</h1>
+                            </div>
+                            <div class="col text-right">
+                                <a href="{{url_for('payout')}}" class="btn btn-primary" style="background-color: #4CAF50; border: 0; margin-right: 10px;">Payout</a>
+                                <a href="{{url_for('transactions')}}" class="btn btn-secondary">See Transactions</a>
+                            </div>
+                          </div>
+                        <div id="pieChartContainer">
+                            <h1 class="col tm-block-title" style="background-color: #547f24;">Balance: PHP {{ '{:,.2f}'.format(erp.balance) }}</h1>
+                            {% if erp.payable %}
+                            <h1 class="col tm-block-title" style="background-color: #547f24;">Accounts Payable: PHP {{ '{:,.2f}'.format(erp.payable) }}</h1>
+                            {% else %}
+                            <h1 class="col tm-block-title" style="background-color: #547f24;">Accounts Payable: PHP 0.00</h1>
+                            {% endif %}
+                            <h1 class="col tm-block-title" style="background-color: #547f24;">Accounts Receivable: PHP {{ '{:,.2f}'.format(erp.receivable) }}</h1>
+                        </div> 
+                            <hr> 
+                            <h2 class="tm-block-title">Successful Orders:</h2>
+                            <div class="tm-notification-items" style="max-height: 115px;">
+                                {% for order in orders %}
+                                    {% if order.status == 'delivered' %}
+                                        <div class="media tm-notification-item" style="background-color: #e5eae5;">
+                                            <div class="tm-gray-circle">
+                                                <img src="{{ url_for('static', filename='images/' + order.image_filename) }}" alt="static/images/logos/profile.jpg"
+                                                    class="rounded-circle" style="height: 80px; width: 85px;"> 
+                                            </div>
+                                            <div class="media-body">
+                                                <p class="mb-2"><b>{{ order.name }}</b><b></b> Successfully done Transaction.
+                                                    <a href="{{ url_for('order_products', order_id=order.id)}}" class="tm-notification-link">
+                                                        See details here
+                                                    </a>
+                                                </p>
+                                                <span class="tm-small tm-text-color-secondary">{{ order.arrival.strftime('%Y-%m-%d %H:%M:%S') }}.</span>
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>                      
+                </div>
+                <div class="col-sm-12 col-md-12 col-lg-6 col-xl-6 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-overflow" style="background-color: #739072;">
+                        <h2 class="tm-block-title">Notification List</h2>
+                        <div class="tm-notification-items">
+                            {% for order in orders %} 
+                                {% if order.status == 'pending' %}
+                                    <div class="media tm-notification-item" style="background-color: #e5eae5;">
+                                        <div class="tm-gray-circle"><img src="{{ url_for('static', filename='images/' + order.image_filename) }}" alt="static/images/logos/profile.jpg" class="rounded-circle" style="height: 80px; width: 85px;"></div>
+                                        <div class="media-body">
+                                            <p class="mb-2"><b>{{ order.name }}</b><b></b> placed their order. <a href="{{ url_for('order_products', order_id=order.id)}}" class="tm-notification-link"> See details here</a></p>
+                                            <span class="tm-small tm-text-color-secondary">{{ order.ordertime.strftime('%Y-%m-%d %H:%M:%S') }}</span>
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 tm-block-col">
+                    <div class="tm-bg-primary-dark tm-block tm-block-taller tm-block-scroll" style="background-color: #739072; min-height: 550px; max-height: 550px;">
+                        <h2 class="tm-block-title">Orders List</h2>
+                        <style>
+                            .filter-option {
+                                display: inline-block;
+                                padding: 5px 10px;
+                                margin-right: 10px;
+                                background-color: #6D9531;
+                                color: #fff;
+                                border-radius: 5px;
+                                cursor: pointer;
+                            }
+                        
+                            .filter-option:hover {
+                                background-color: #547f24; /* Darker shade on hover */
+                            }
+                        </style>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Filter:</label>
+                            <span class="filter-option" onclick="filterOrders('all')">All</span>
+                            <span style="background-color: #EFC54B;" class="filter-option" onclick="filterOrders('pending')">Pending</span>
+                            <span style="background-color: #9BE64D;" class="filter-option" onclick="filterOrders('accepted')">Accepted</span>
+                            <span style="background-color: #DA534F;" class="filter-option" onclick="filterOrders('denied')">Denied</span>
+                        </div>                        
+                        <table class="table" style="background-color: #f4f8f4; width: 100%;">
+                            <thead style="background-color: #6D9531;">
+                                <tr>
+                                    <th scope="col">ORDER NO.</th>
+                                    <th scope="col">STATUS</th>
+                                    <th scope="col">USERNAME</th>
+                                    <th scope="col">FULL NAME</th>
+                                    <th scope="col">PHONE</th>
+                                    <th scope="col">ADRESS</th>
+                                    <th scope="col">ZIP</th>
+                                    <th scope="col"> PAYMETHOD</th>
+                                    <th scope="col">DETAILS</th>
+                                    <th scope="col">ACTION</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for order in orders %}
+                                <tr>
+                                    <th scope="row"><b>{{order.id}}</b></th>
+                                    <td>
+                                        <div class="tm-status-circle {{order.s_indicator}}">
+                                        </div>{{order.status}}
+                                    </td>
+                                    <td><b>{{order.username}}</b></td>
+                                    <td><b>{{order.name}}</b></td>
+                                    <td><b>{{order.phone}}</b></td>
+                                    <td><b>{{order.street}}, {{order.state}}, {{order.city}}</b></td>
+                                    <td><b>{{order.zip}}</b></td>
+                                    <td><b>{{order.payment}}</b></td>
+                                    <td><a href="{{ url_for('order_products', order_id=order.id)}}"><b>See Details</b></a></td>
+                                    <td>
+                                        {% if order.status != 'denied' %}
+                                            {% if order.status == 'accepted' %}
+                                                <a class="btn btn-primary btn-sm" style="background-color: #6D9531; border: 0;" href="{{ url_for('ship_order', id=order.id)}}"><b>SHIP</b></a> 
+                                                <a class="btn btn-primary btn-sm" style="background-color: #FF4229; border: 0;" href="#" onclick="confirmDeny('{{ url_for('cancel_ship', id=order.id)}}')"><b>CANCEL</b></a>
+                                            {% elif order.status == 'received' %}
+                                                <a class="btn btn-primary btn-sm" style="background-color: #4CAF50; border: 0;" href="{{ url_for('mark_delivered', id=order.id)}}"><b>DELIVERED</b></a>
+                                            {% elif order.status == 'deliver' %}
+                                                <a class="btn btn-primary btn-sm" style="background-color: #4CAF50; border: 0; pointer-events: none; opacity: 0.5;" href="{{ url_for('mark_delivered', id=order.id)}}"><b>Waiting</b></a>
+                                            {% elif order.status == 'delivered' %}
+                                                <a style="color: green; align-items: center;"><b>Order Success</b></a>
+                                            {% else %}
+                                                <a class="btn btn-primary btn-sm" style="background-color: #6D9531; border: 0;" href="{{ url_for('accept_order', id=order.id)}}"><b>ACCEPT</b></a>
+                                                <a class="btn btn-primary btn-sm" style="background-color: #FF4229; border: 0;" href="#" onclick="confirmDeny('{{ url_for('deny_order', id=order.id)}}')"><b>DENY</b></a>
+                                            {% endif %}
+                                        {% else %}
+                                            <a style="color: #FF4229; align-items: center;"><b>DENIED</b></a>
+                                        {% endif %}
+                                    </td>                                                                                                    
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+            {% include 'footer.html' %}
+        </div>
+    </div>
+    <style>
+        /* Add a class for the fade-in effect */
+        .fade-in {
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+    
+        .fade-in.show {
+            opacity: 1;
+        }
+    </style>
+
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+
+<script>
+    function filterOrders(status) {
+        let rows = document.querySelectorAll('tbody tr');
+        rows.forEach(row => {
+            let statusColumn = row.querySelector('td:nth-child(2)');
+            let rowStatus = statusColumn.textContent.trim().toLowerCase();
+
+            if (status === 'all') {
+                // Show all rows when 'ALL' is clicked
+                row.classList.add('fade-in');
+                setTimeout(() => {
+                    row.style.display = '';
+                    row.classList.add('show');
+                }, 50); // Delay for a smooth transition
+            } else if ((status === 'all' || rowStatus === status.toLowerCase()) && !(status === 'all' && rowStatus === 'denied')) {
+                // Show rows based on the selected status
+                row.classList.add('fade-in');
+                setTimeout(() => {
+                    row.style.display = '';
+                    row.classList.add('show');
+                }, 50); // Delay for a smooth transition
+            } else {
+                // Hide non-matching rows
+                row.classList.remove('fade-in', 'show');
+                row.style.display = 'none';
+            }
+        });
+    }
+
+    function confirmDeny(denyUrl) {
+        Swal.fire({
+            title: 'The system says:',
+            text: "Continue with this Action?",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#3085d6',
+            cancelButtonColor: '#d33',
+            confirmButtonText: 'Yes'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                // If the user clicks OK, proceed with the denial
+                window.location.href = denyUrl;
+            }
+        });
+    }
+</script>
+
+
+
+
+    <script src="static/js2/jquery-3.3.1.min.js"></script>
+    <!-- https://jquery.com/download/ -->
+    <script src="static/js2/moment.min.js"></script>
+    <!-- https://momentjs.com/ -->
+    <script src="static/js2/Chart.min.js"></script>
+    <!-- http://www.chartjs.org/docs/latest/ -->
+    <script src="static/js2/bootstrap.min.js"></script>
+    <!-- https://getbootstrap.com/ -->
+    <script src="static/js2/tooplate-scripts.js"></script>
+    <script>
+        Chart.defaults.global.defaultFontColor = 'white';
+        let ctxLine,
+            ctxBar,
+            ctxPie,
+            optionsLine,
+            optionsBar,
+            optionsPie,
+            configLine,
+            configBar,
+            configPie,
+            lineChart;
+        barChart, pieChart;
+        // DOM is ready
+        $(function () {
+            drawLineChart(); // Line Chart
+            drawBarChart(); // Bar Chart
+            drawPieChart(); // Pie Chart
+
+            $(window).resize(function () {
+                updateLineChart();
+                updateBarChart();                
+            });
+        })
+    </script>
+</body>
+
+</html>

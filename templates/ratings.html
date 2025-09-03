@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            text-align: center;
+            margin: 50px;
+            background-color: #f4f4f4;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .stars {
+            display: flex;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+
+        .star {
+            font-size: 24px;
+            margin: 5px;
+            color: #ffd700; /* Gold color for stars */
+        }
+
+        #rating {
+            margin-top: 20px;
+            font-size: 18px;
+            color: #333; /* Dark gray color for rating text */
+        }
+
+        #ratingForm {
+            margin-top: 20px;
+        }
+
+        button {
+            padding: 10px 20px;
+            font-size: 16px;
+            background-color: #4caf50; /* Green color for the submit button */
+            color: #fff; /* White text for the button */
+            border: none;
+            cursor: pointer;
+            border-radius: 5px;
+        }
+
+        button:hover {
+            background-color: #45a049; /* Darker green color on hover */
+        }
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const stars = document.querySelectorAll('.star');
+            const ratingDisplay = document.getElementById('rating');
+            const ratingForm = document.getElementById('ratingForm');
+            const ratingInput = document.getElementById('ratingInput');
+
+            let currentRating = 0;
+
+            stars.forEach((star, index) => {
+                star.addEventListener('click', function () {
+                    currentRating = index + 1;
+                    updateRatingDisplay();
+                    updateHiddenInput();
+                });
+            });
+
+            function updateRatingDisplay() {
+                ratingDisplay.textContent = `Your Rating: ${currentRating} star${currentRating !== 1 ? 's' : ''}`;
+            }
+
+            function updateHiddenInput() {
+                ratingInput.value = currentRating;
+            }
+        });
+    </script>
+    <title>Product Rating</title>
+</head>
+<body>
+    <h1>Rate Your Experience</h1>
+    <form id="ratingForm" action="{{url_for('mark_received', id=order.id)}}" method="post">
+        <div class="stars">
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+            <span class="star">★</span>
+        </div>
+        <div id="rating">Your Rating: 1 star</div>
+        <input type="hidden" id="ratingInput" name="rating" value="1">
+        <button type="submit">Submit Rating</button>
+    </form>
+</body>
+</html>

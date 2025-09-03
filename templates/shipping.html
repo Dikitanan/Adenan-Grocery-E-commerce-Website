@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Shipping Form</title>
+  <style>
+    body {
+      font-family: 'Arial', sans-serif;
+      background-color: #f4f4f4;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    form {
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+      padding: 20px;
+      width: 300px;
+      position: relative;
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      color: #555;
+    }
+
+    input {
+      width: 100%;
+      padding: 8px;
+      margin-bottom: 16px;
+      box-sizing: border-box;
+    }
+
+    a.close-button {
+      position: absolute;
+      top: 10px;
+      right: 10px;
+      background-color: #ddd;
+      border: none;
+      border-radius: 50%;
+      padding: 5px;
+      cursor: pointer;
+      width: 20px; /* Set a fixed width */
+      height: 20px; /* Set a fixed height */
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      text-decoration: none;
+      color: #333;
+    }
+
+    a.close-button:hover {
+      background-color: #ccc;
+    }
+
+    /* Button styles */
+    button {
+      background-color: #4caf50;
+      color: #fff;
+      padding: 10px;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      width: 100%;
+    }
+
+    button:hover {
+      background-color: #45a049;
+    }
+  </style>
+</head>
+<body>
+  <form method="POST" action="{{ url_for('ship_order', id=order.id) }}">
+    <a href="{{ url_for('sellerpage') }}" class="close-button">X</a>
+    <h1>Shipping Information</h1>
+
+    <div>
+      <label for="shippedWith">Shipped With:</label>
+      <input type="text" id="shippedWith" name="shippedWith" required>
+    </div>
+
+    <div>
+      <label for="estimatedArrival">Estimated Arrival:</label>
+      <input type="text" id="estimatedArrival" name="estimatedArrival" required>
+    </div>
+
+    <button type="submit">Submit</button>
+  </form>
+</body>
+</html>
