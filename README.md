@@ -27,7 +27,10 @@ This application enables users to both buy and sell products, while giving admin
 - **Programming Language**: Python  
 - **Database**: SQLite / PostgreSQL (configurable)  
 - **Frontend**: HTML, CSS, JavaScript (Jinja2 templating)  
-- **Authentication**: Flask-Login  
+- **Authentication**: Flask-Login
+
+## Live Link
+- **Adenan Grocery**: https://dikitanan21.pythonanywhere.com/
 
 ---
 
